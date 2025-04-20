@@ -1,8 +1,17 @@
-import app from './app';
+import { loadConfig } from './config/config';
+import { OpenAIConversationService } from './services/OpenAIConversationService';
+import { initializeApp } from './app';
 
-const PORT = process.env.PORT || 3001;
+const startServer = () => {
+    const config = loadConfig();
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+    const conversationService = new OpenAIConversationService(config.openai_api_key);
+    const app = initializeApp(conversationService);
+    
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
+};
+
+startServer();

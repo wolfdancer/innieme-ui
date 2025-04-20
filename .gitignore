@@ -16,6 +16,8 @@ coverage/
 # Environment files
 .env*
 !.env.example
+config.yaml
+data
 
 # Logs
 logs
@@ -43,3 +45,6 @@ Thumbs.db
 
 # TypeScript
 *.tsbuildinfo
+
+# AUto-generated Vite files
+vite.config.d.ts
