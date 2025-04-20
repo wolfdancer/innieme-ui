@@ -1,7 +1,14 @@
 import request from 'supertest';
-import app from '../app';
+import app, { setConversationService } from '../app';
+import { EchoConversationService } from '../services/EchoConversationService';
 
 describe('Heartbeat API', () => {
+    beforeAll(() => {
+        // Inject EchoConversationService before all tests
+        const echoService = new EchoConversationService();
+        setConversationService(echoService);
+    });
+
     test('should respond with correct structure for a simple message', async () => {
         const message = 'hello';
         const response = await request(app)

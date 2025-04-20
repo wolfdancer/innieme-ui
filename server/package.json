@@ -15,9 +15,12 @@
   "dependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
+    "@types/js-yaml": "^4.0.2",
     "@types/node": "^22.14.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "js-yaml": "^4.1.0",
+    "openai": "^4.95.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
