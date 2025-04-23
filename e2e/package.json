@@ -1,0 +1,28 @@
+{
+    "name": "e2e",
+    "version": "1.0.0",
+    "description": "End-to-end tests for InnieMe application",
+    "private": true,
+    "scripts": {
+      "test": "playwright test",
+      "test:headed": "playwright test --headed",
+      "test:chrome": "playwright test --project=chromium",
+      "test:firefox": "playwright test --project=firefox",
+      "test:webkit": "playwright test --project=webkit",
+      "test:auth": "AUTH_TOKEN=true playwright test",
+      "install:browsers": "playwright install",
+      "report": "playwright show-report",
+      "debug": "playwright test --debug"
+    },
+    "dependencies": {
+      "@playwright/test": "^1.40.1",
+      "typescript": "^5.3.3"
+    },
+    "devDependencies": {
+      "@types/node": "^20.10.5",
+      "ts-node": "^10.9.2"
+    },
+    "engines": {
+      "node": ">=16.0.0"
+    }
+  }
