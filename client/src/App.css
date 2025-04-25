@@ -71,3 +71,35 @@ pre {
   word-wrap: break-word;
   font-size: 14px;
 }
+
+.message-container {
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+}
+
+.user-message,
+.bot-message {
+  margin: 10px 0;
+  text-align: left;
+}
+
+.label {
+  font-weight: bold;
+  margin-right: 10px;
+  color: #61dafb;
+}
+
+.content {
+  color: #ffffff;
+}
+
+.timestamp {
+  font-size: 0.8em;
+  color: #888;
+  margin: 0 10px;
+  font-style: italic;
+}
