@@ -26,6 +26,22 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <h1>InnieMe Heartbeat Test</h1>
+                
+                {response && response.ping && response.pong && (
+                    <div className="message-container">
+                        <div className="user-message">
+                            <span className="label">You:</span>
+                            <span className="timestamp">{response.received}</span>
+                            <span className="content">{response.ping}</span>
+                        </div>
+                        <div className="bot-message">
+                            <span className="label">Bot:</span>
+                            <span className="timestamp">{response.responded}</span>
+                            <span className="content">{response.pong}</span>
+                        </div>
+                    </div>
+                )}
+
                 <div className="input-container">
                     <input
                         type="text"
