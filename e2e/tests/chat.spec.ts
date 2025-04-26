@@ -60,5 +60,7 @@ test.describe('E2E Tests', () => {
       content: expect.stringContaining("original question"),
       timestamp: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)
     });
+
+    expect(newHistory[3].content).toContain(firstMessage);
   });
 })
