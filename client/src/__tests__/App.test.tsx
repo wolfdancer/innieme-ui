@@ -40,14 +40,14 @@ describe('App Component', () => {
 
   test('makes API call when button is clicked', async () => {
     const message = 'Hello World';
-    const exxpectedResponse = "Hello Mock!"
+    const expectedResponse = "Hello Mock!"
     // Mock successful response
     const mockResponse = { 
       data: { 
         ping: message,
-        pong: exxpectedResponse,
-        received: new Date().toISOString(),
-        responded: new Date().toISOString()
+        pong: expectedResponse,
+        received: "received",
+        responded: "responded"
       } 
     };
     mockedAxios.get.mockResolvedValueOnce(mockResponse);
@@ -70,7 +70,7 @@ describe('App Component', () => {
     // Check if response is displayed after API call
     await waitFor(() => {
       // Check the message container structure
-      const messageContainer = document.querySelector('.message-container');
+      const messageContainer = document.querySelector('.messages-history');
       expect(messageContainer).toBeInTheDocument();
       if (!messageContainer) {
         throw new Error('Message container not found');
@@ -85,27 +85,15 @@ describe('App Component', () => {
       
       // Check second message div (bot message)
       const botMessageDiv = messageChildren[1];
-      expect(botMessageDiv.querySelector('.label')).toHaveTextContent('Bot:');
-      expect(botMessageDiv.querySelector('.content')).toHaveTextContent(exxpectedResponse);
-
-      // Check JSON response
-      const responseJson = screen.getByText((content) => {
-        return content.includes(`"ping": "${message}"`) &&
-               content.includes(`"pong": "${exxpectedResponse}"`) &&
-               content.includes('"received":') &&
-               content.includes('"responded":');
-      });
-      
-      expect(screen.getByText('Response:')).toBeInTheDocument();
-      expect(responseJson).toBeInTheDocument();
-      expect(responseJson.tagName.toLowerCase()).toBe('pre');
+      expect(botMessageDiv.querySelector('.label')).toHaveTextContent('InnieMe:');
+      expect(botMessageDiv.querySelector('.content')).toHaveTextContent(expectedResponse);
     });
     
   });
 
   test('handles API error', async () => {
     // Mock error response
-    mockedAxios.get.mockRejectedValueOnce(new Error('Network Error'));
+    mockedAxios.get.mockRejectedValueOnce(new Error('Mocking Network Error'));
     
     render(<App />);
     
@@ -119,7 +107,7 @@ describe('App Component', () => {
     
     // Check if error message is displayed
     await waitFor(() => {
-      expect(screen.getByText(/Failed to connect to the server/)).toBeInTheDocument();
+      expect(screen.getByText(/Mocking Network Error/)).toBeInTheDocument();
     });
   });
 
@@ -128,8 +116,8 @@ describe('App Component', () => {
       data: { 
         ping: "hello",
         pong: "hello back",
-        received: new Date().toISOString(),
-        responded: new Date().toISOString()
+        received: "receieved-api",
+        responded: "responded-api"
       } 
     };
     mockedAxios.get.mockResolvedValueOnce(mockResponse);
