@@ -50,7 +50,7 @@ describe('App Component', () => {
         responded: "responded"
       } 
     };
-    mockedAxios.get.mockResolvedValueOnce(mockResponse);
+    mockedAxios.post.mockResolvedValueOnce(mockResponse);
     
     render(<App />);
     
@@ -62,12 +62,16 @@ describe('App Component', () => {
     const button = screen.getByRole('button', { name: 'Send Heartbeat' });
     await userEvent.click(button);
     
-    // Check if axios was called correctly
-    expect(mockedAxios.get).toHaveBeenCalledWith(
-      'http://localhost:3001/api/heartbeat?message=Hello%20World'
+    // Check if axios was called correctly with the new endpoint and body
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      'http://localhost:3001/api/chat',
+      {
+        message: message,
+        history: []  // Initially empty as there are no previous responses
+      }
     );
     
-    // Check if response is displayed after API call
+    // Rest of the test remains the same
     await waitFor(() => {
       // Check the message container structure
       const messageContainer = document.querySelector('.messages-history');
@@ -93,7 +97,7 @@ describe('App Component', () => {
 
   test('handles API error', async () => {
     // Mock error response
-    mockedAxios.get.mockRejectedValueOnce(new Error('Mocking Network Error'));
+    mockedAxios.post.mockRejectedValueOnce(new Error('Mocking Network Error'));
     
     render(<App />);
     
@@ -120,7 +124,7 @@ describe('App Component', () => {
         responded: "responded-api"
       } 
     };
-    mockedAxios.get.mockResolvedValueOnce(mockResponse);
+    mockedAxios.post.mockResolvedValueOnce(mockResponse);
     
     render(<App />);
     
@@ -129,8 +133,12 @@ describe('App Component', () => {
     await userEvent.type(input, 'Hello World{enter}');
     
     // Check if axios was called correctly
-    expect(mockedAxios.get).toHaveBeenCalledWith(
-      'http://localhost:3001/api/heartbeat?message=Hello%20World'
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      'http://localhost:3001/api/chat',
+      {
+        message: 'Hello World',
+        history: []  // Initially empty as there are no previous responses
+      }
     );
   });
 

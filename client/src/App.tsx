@@ -13,7 +13,16 @@ function App() {
 
         setLoading(true);
         try {
-            const result = await axios.get(`http://localhost:3001/api/heartbeat?message=${encodeURIComponent(message)}`);
+            const history = responses.flatMap(r => [
+                { role: 'user', content: r.ping},
+                { role: 'assistant', content: r.pong}
+            ]);
+            
+            const result = await axios.post(`http://localhost:3001/api/chat`, {
+                message: message,
+                history: history
+            });
+            
             setResponses(prev => [...prev, result.data]);
             setMessage(''); // Clear input after successful send
         } catch (error) {
