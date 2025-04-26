@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
 function App() {
     const [message, setMessage] = useState('');
-    const [response, setResponse] = useState<any>(null);
+    const [responses, setResponses] = useState<any[]>([]);
+    const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
     const pingHeartbeat = async () => {
@@ -13,10 +14,11 @@ function App() {
         setLoading(true);
         try {
             const result = await axios.get(`http://localhost:3001/api/heartbeat?message=${encodeURIComponent(message)}`);
-            setResponse(result.data);
+            setResponses(prev => [...prev, result.data]);
+            setMessage(''); // Clear input after successful send
         } catch (error) {
             console.error('Error:', error);
-            setResponse({ error: 'Failed to connect to the server' });
+            setError(error instanceof Error ? error.message : `${error}`);
         } finally {
             setLoading(false);
         }
@@ -27,20 +29,28 @@ function App() {
             <header className="App-header">
                 <h1>InnieMe Heartbeat Test</h1>
                 
-                {response && response.ping && response.pong && (
-                    <div className="message-container">
-                        <div className="user-message">
-                            <span className="label">You:</span>
-                            <span className="timestamp">{response.received}</span>
-                            <span className="content">{response.ping}</span>
-                        </div>
-                        <div className="bot-message">
-                            <span className="label">Bot:</span>
-                            <span className="timestamp">{response.responded}</span>
-                            <span className="content">{response.pong}</span>
-                        </div>
-                    </div>
-                )}
+                <div className="messages-history">
+                    {responses.map((response, index) => (
+                        response.ping && response.pong ? (
+                            <React.Fragment key={`conversation-${index}`}>
+                                <div key={`user-${response.received}`} className="user-message">
+                                    <span className="label">You:</span>
+                                    <span className="timestamp">{response.received}</span>
+                                    <span className="content">{response.ping}</span>
+                                </div>
+                                <div key={`user-${response.responded}`} className="bot-message">
+                                    <span className="label">InnieMe:</span>
+                                    <span className="timestamp">{response.responded}</span>
+                                    <span className="content">{response.pong}</span>
+                                </div>
+                            </React.Fragment>
+                        ) : (
+                            <div key={`error-${response.timestamp || Date.now()}`} className="error-message">
+                                {response.error}
+                            </div>
+                        )
+                    ))}
+                </div>
 
                 <div className="input-container">
                     <input
@@ -48,17 +58,24 @@ function App() {
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Enter a message"
-                        onKeyPress={(e) => e.key === 'Enter' && pingHeartbeat()}
+                        onKeyDown={(e) => e.key === 'Enter' && pingHeartbeat()}
                     />
                     <button onClick={pingHeartbeat} disabled={loading}>
                         {loading ? 'Sending...' : 'Send Heartbeat'}
                     </button>
                 </div>
 
-                {response && (
+                {error && (
+                    <div className="error-container">
+                        <h2>Error:</h2>
+                        <pre className="error-message">{error}</pre>
+                    </div>
+                )}
+
+                {responses.length > 0 && (
                     <div className="response-container">
-                        <h2>Response:</h2>
-                        <pre>{JSON.stringify(response, null, 2)}</pre>
+                        <h2>Response History:</h2>
+                        <pre>{JSON.stringify(responses, null, 2)}</pre>
                     </div>
                 )}
             </header>

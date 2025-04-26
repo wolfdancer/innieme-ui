@@ -13,10 +13,9 @@ export class HeartbeatPage {
       await this.page.goto('/');
     }
     
-    async getHeartbeatStatus(query: string) {
+    async chat(query: string): Promise<Chat[]> {
       await this.enterMessage(query);
-      const responseText = await this.page.textContent('.response-container pre');
-      return responseText ? JSON.parse(responseText) : null;
+      return await this.getChatHistory();
     }
 
     async enterMessage(query: string) {
@@ -26,7 +25,7 @@ export class HeartbeatPage {
     }
 
     async getChatHistory(): Promise<Chat[]> {
-      const messages = await this.page.$$('.message-container > div');
+      const messages = await this.page.$$('.messages-history > div');
       const history: Chat[] = [];
       
       for (const message of messages) {
