@@ -23,6 +23,7 @@ const App: React.FC<AppProps> = ({ topic_id }) => {
             ]);
             
             const result = await axios.post(`http://localhost:3001/api/chat`, {
+                topic: topic_id,
                 message: message,
                 history: history
             });
