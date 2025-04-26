@@ -19,11 +19,11 @@ describe('App Component', () => {
     render(<App />);
     
     // Check if title is rendered
-    expect(screen.getByText('InnieMe Heartbeat Test')).toBeInTheDocument();
+    expect(screen.getByText('Welcome to InnieMe! How can I help you today?')).toBeInTheDocument();
     
     // Check if input and button are rendered
     expect(screen.getByPlaceholderText('Enter a message')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Send Heartbeat' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Send' })).toBeInTheDocument();
     
     // Response should not be visible initially
     expect(screen.queryByText('Response:')).not.toBeInTheDocument();
@@ -59,7 +59,7 @@ describe('App Component', () => {
     await userEvent.type(input, message);
     
     // Click the button
-    const button = screen.getByRole('button', { name: 'Send Heartbeat' });
+    const button = screen.getByRole('button', { name: 'Send' });
     await userEvent.click(button);
     
     // Check if axios was called correctly with the new endpoint and body
@@ -106,7 +106,7 @@ describe('App Component', () => {
     await userEvent.type(input, 'Hello World');
     
     // Click the button
-    const button = screen.getByRole('button', { name: 'Send Heartbeat' });
+    const button = screen.getByRole('button', { name: 'Send' });
     await userEvent.click(button);
     
     // Check if error message is displayed
@@ -146,7 +146,7 @@ describe('App Component', () => {
     render(<App />);
     
     // Click the button without typing anything
-    const button = screen.getByRole('button', { name: 'Send Heartbeat' });
+    const button = screen.getByRole('button', { name: 'Send' });
     await userEvent.click(button);
     
     // Ensure axios was not called

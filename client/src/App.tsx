@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
-function App() {
+interface AppProps {
+  topic_id?: string;  // Making it optional in case App is used without a topic_id
+}
+
+const App: React.FC<AppProps> = ({ topic_id }) => {
     const [message, setMessage] = useState('');
     const [responses, setResponses] = useState<any[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -19,6 +23,7 @@ function App() {
             ]);
             
             const result = await axios.post(`http://localhost:3001/api/chat`, {
+                topic: topic_id,
                 message: message,
                 history: history
             });
@@ -36,7 +41,7 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <h1>InnieMe Heartbeat Test</h1>
+                <h1>Welcome to InnieMe! How can I help you today?</h1>
                 
                 <div className="messages-history">
                     {responses.map((response, index) => (
@@ -70,7 +75,7 @@ function App() {
                         onKeyDown={(e) => e.key === 'Enter' && pingHeartbeat()}
                     />
                     <button onClick={pingHeartbeat} disabled={loading}>
-                        {loading ? 'Sending...' : 'Send Heartbeat'}
+                        {loading ? 'Sending...' : 'Send'}
                     </button>
                 </div>
 

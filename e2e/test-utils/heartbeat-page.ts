@@ -20,8 +20,8 @@ export class HeartbeatPage {
 
     async enterMessage(query: string) {
       await this.page.fill('input[type="text"]', query);
-      await this.page.click('button:has-text("Send Heartbeat")');
-      await this.page.waitForSelector('button:has-text("Send Heartbeat"):enabled');
+      await this.page.click('button:has-text("Send")');
+      await this.page.waitForSelector('button:has-text("Send"):enabled');
     }
 
     async getChatHistory(): Promise<Chat[]> {
