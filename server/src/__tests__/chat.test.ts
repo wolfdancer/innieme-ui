@@ -6,7 +6,6 @@ import { EchoConversationService } from '../services/EchoConversationService';
 const echoService = new EchoConversationService();
 const app = initializeApp(echoService);
 
-
 describe('Chat API', () => {
 
     test('should handle basic chat message successfully', async () => {
@@ -73,7 +72,7 @@ describe('Chat API', () => {
 
         expect(response.body).toMatchObject({
             error: 'Failed to process message with conversation service',
-            details: 'Cannot read properties of undefined (reading \'split\')'
+            details: 'Message cannot be undefined'
         });
     });
 });

@@ -3,6 +3,7 @@ import cors from 'cors';
 import { IConversationService, ChatMessage } from '../services/IConversationService';
 
 interface ChatRequest {
+    topic?: string;
     message: string;
     history?: ChatMessage[];
 }
@@ -19,6 +20,7 @@ const app = express();
 
 export const initializeApp = (service: IConversationService) => {
     let conversationService = service;
+    service.initialize();
     
     // Middleware
     app.use(express.json());
@@ -55,7 +57,11 @@ export const initializeApp = (service: IConversationService) => {
 
         try {
 
-            const aiResponse = await conversationService.sendMessage(requestBody.message, requestBody.history);
+            const aiResponse = await conversationService.sendMessage(
+                requestBody.message,
+                requestBody.history,
+                requestBody.topic
+            );
             const response: ChatResponse = {
                 ping: requestBody.message,
                 pong: aiResponse,
