@@ -7,13 +7,22 @@ export class EchoConversationService implements IConversationService {
         }
     }
 
-    async sendMessage(message: string, history: ChatMessage[] = []): Promise<string> {
+    async sendMessage(message: string, history: ChatMessage[] = [], topic: string = ''): Promise<string> {
         this.checkForError(message);
         
+        if (message === undefined) {
+            throw new Error("Message cannot be undefined");
+        }
+
+        // Reverse the message and history for the echo effect
         const response = [message.split('').reverse().join('')];
         for (const msg of history.reverse()) {
             response.push(msg.content.split('').reverse().join(''));
         }
         return response.join('\n');
+    }
+
+    async initialize(): Promise<void> {
+        // No initialization needed for EchoConversationService
     }
 }

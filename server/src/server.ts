@@ -5,7 +5,7 @@ import { initializeApp } from './app';
 const startServer = () => {
     const config = loadConfig();
 
-    const conversationService = new OpenAIConversationService(config.openai_api_key);
+    const conversationService = new OpenAIConversationService(config);
     const app = initializeApp(conversationService);
     
     const port = process.env.PORT || 3001;
