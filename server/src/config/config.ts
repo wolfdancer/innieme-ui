@@ -19,8 +19,7 @@ export interface Config {
     outies: Outie[];
 }
 
-export function loadConfig(): Config {
-    const configPath = path.join(__dirname, '../../../config.yaml');
+export function loadConfig(configPath:string): Config {
     const fileContents = fs.readFileSync(configPath, 'utf8');
     const config = yaml.load(fileContents) as Config;
     
