@@ -87,13 +87,6 @@ const App: React.FC<AppProps> = ({ topic_id }) => {
                         <pre className="error-message">{error}</pre>
                     </div>
                 )}
-
-                {responses.length > 0 && (
-                    <div className="response-container">
-                        <h2>Response History:</h2>
-                        <pre>{JSON.stringify(responses, null, 2)}</pre>
-                    </div>
-                )}
             </header>
         </div>
     );
