@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_URL = `${window.location.protocol}//${window.location.hostname}:3001`;
 
 interface AppProps {
   topic_id?: string;  // Making it optional in case App is used without a topic_id

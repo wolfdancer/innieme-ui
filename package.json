@@ -45,7 +45,10 @@
       "docker:stop:server": "docker stop $(docker ps -q --filter ancestor=innieme-server) || true",
       "docker:stop:debug": "concurrently \"npm run docker:stop:debug:server\" \"npm run docker:stop:debug:client\"",
       "docker:stop:debug:server": "docker stop $(docker ps -q --filter ancestor=innieme-server.debug) || true",
-      "docker:stop:debug:client": "docker stop $(docker ps -q --filter ancestor=innieme-client.debug) || true"
+      "docker:stop:debug:client": "docker stop $(docker ps -q --filter ancestor=innieme-client.debug) || true",
+
+      "docker:up:debug": "docker-compose -f docker-compose.debug.yml up",
+      "docker:down:debug": "docker-compose -f docker-compose.debug.yml down"
     },
     "devDependencies": {
       "concurrently": "^8.2.0"
