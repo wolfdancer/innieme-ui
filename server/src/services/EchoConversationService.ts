@@ -11,7 +11,7 @@ export class EchoConversationService implements IConversationService {
         this.checkForError(message);
         
         if (message === undefined) {
-            throw new Error("Message cannot be undefined");
+            throw new Error("Input Error: message cannot be undefined");
         }
 
         // Reverse the message and history for the echo effect

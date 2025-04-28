@@ -72,7 +72,7 @@ describe('Chat API', () => {
 
         expect(response.body).toMatchObject({
             error: 'Failed to process message with conversation service',
-            details: 'Message cannot be undefined'
+            details: 'Input Error: message cannot be undefined'
         });
     });
 });
