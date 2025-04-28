@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 interface AppProps {
   topic_id?: string;  // Making it optional in case App is used without a topic_id
 }
@@ -22,7 +24,7 @@ const App: React.FC<AppProps> = ({ topic_id }) => {
                 { role: 'assistant', content: r.pong}
             ]);
             
-            const result = await axios.post(`http://localhost:3001/api/chat`, {
+            const result = await axios.post(`${API_URL}/api/chat`, {
                 topic: topic_id,
                 message: message,
                 history: history

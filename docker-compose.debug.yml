@@ -1,0 +1,24 @@
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.debug
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:3001
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.debug
+    ports:
+      - "3001:3001"
+      - "9229:9229"
+    volumes:
+      - ./config.yaml:/app/config/config.yaml
+      - ./data:/app/config/data
+    environment:
+      - CONFIG_PATH=/app/config/config.yaml
