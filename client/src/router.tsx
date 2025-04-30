@@ -8,7 +8,7 @@ export const router = createBrowserRouter([
     element: <HomePage />,
   },
   {
-    path: '/topics/:topic_id',
+    path: '/topics/*',
     element: <TopicPage />,
   }
 ]);
