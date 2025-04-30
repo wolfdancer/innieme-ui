@@ -9,7 +9,9 @@ const TopicPage = () => {
   // Extract the full topic path
   // For a URL like /topics/workday/2025/separation
   // This will give us "workday/2025/separation"
-  const fullTopicId = topic_id || location.pathname.replace('/topics/', '');
+  const fullTopicId = topic_id 
+    ? decodeURIComponent(topic_id).replace(/\/+$/, '') 
+    : decodeURIComponent(location.pathname.replace('/topics/', '').replace(/\/+$/, ''));
 
   return (
     <div>
