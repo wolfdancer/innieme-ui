@@ -33,7 +33,7 @@ export class OpenAIConversationService implements IConversationService {
         const matchedTopic = this.topics.get(topic);
         let systemPrompt = '';
         if (matchedTopic) {
-            console.log(`Using topic: ${matchedTopic.name}: ${matchedTopic.name}`);
+            console.log(`Using topic: ${matchedTopic.id}: ${matchedTopic.name}`);
             const match = await matchedTopic.similaritySearch(message);
             systemPrompt = match?.length 
                 ? `${matchedTopic.role}
