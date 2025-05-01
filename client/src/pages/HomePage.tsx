@@ -5,7 +5,7 @@ import App from '../App';
 const HomePage: React.FC = () => {
   return (
     <>
-      <App />
+      <App topic_id='default'/>
     </>
   );
 };

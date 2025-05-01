@@ -24,17 +24,17 @@ server {
     }
 
     location /api {
-	# Add request body buffering
-	client_body_buffer_size 16k;
-	# Force reading the request body before proxying
-	proxy_pass_request_body on;
-    
-	# Log to separate file with our custom format
-	access_log /var/log/nginx/api_access.log api_log;
+        # Add request body buffering
+        client_body_buffer_size 16k;
+        # Force reading the request body before proxying
+        proxy_pass_request_body on;
+        
+        # Log to separate file with our custom format
+        access_log /var/log/nginx/api_access.log api_log;
 
-	# Add a proxy request interceptor
-	proxy_set_header X-Save-Request-Body "true";
-    
+        # Add a proxy request interceptor
+        proxy_set_header X-Save-Request-Body "true";
+        
         proxy_pass http://localhost:3001;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;

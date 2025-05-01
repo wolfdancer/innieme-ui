@@ -29,7 +29,7 @@ test.describe('E2E Tests', () => {
 
     expect(history[1]).toEqual({
         label: 'InnieMe:',
-        content: expect.stringContaining('assistant'),
+        content: expect.stringContaining('innieme'),
         timestamp: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)
     });
     
