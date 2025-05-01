@@ -30,10 +30,10 @@ export class OpenAIConversationService implements IConversationService {
     }
     
     async sendMessage(message: string, history: ChatMessage[] = [], topic: string = ''): Promise<string> {
-        const matchedTopic = this.topics.get(topic) ?? this.topics.get("default");
+        const matchedTopic = this.topics.get(topic);
         let systemPrompt = '';
         if (matchedTopic) {
-            console.log(`Using topic: ${matchedTopic.name}`);
+            console.log(`Using topic: ${matchedTopic.name}: ${matchedTopic.name}`);
             const match = await matchedTopic.similaritySearch(message);
             systemPrompt = match?.length 
                 ? `${matchedTopic.role}
