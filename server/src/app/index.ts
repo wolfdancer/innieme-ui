@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { IConversationService, ChatMessage } from '../services/IConversationService';
+import { RateLimitRequestHandler } from 'express-rate-limit';
 
 interface ChatRequest {
     topic?: string;
@@ -18,13 +19,20 @@ interface ChatResponse {
 // Initialize express app
 const app = express();
 
-export const initializeApp = (service: IConversationService) => {
+export const initializeApp = (
+    service: IConversationService,
+    limiter?: RateLimitRequestHandler) => {
     let conversationService = service;
     service.initialize();
     
     // Middleware
     app.use(express.json());
     app.use(cors());
+
+    // Apply rate limiting middleware if provided
+    if (limiter) {
+        app.use(limiter);
+    }
 
     // Heartbeat API endpoint
     app.get('/api/heartbeat', async (req: Request, res: Response) => {
