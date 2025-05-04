@@ -21,7 +21,7 @@ export class HeartbeatPage {
     async enterMessage(query: string) {
       await this.page.fill('input[type="text"]', query);
       await this.page.click('button:has-text("Send")');
-      await new Promise(resolve => setTimeout(resolve, 10))
+      await new Promise(resolve => setTimeout(resolve, MESSAGE_SEND_DELAY_MS)) // Small delay to ensure the "Send" button is re-enabled
       await this.page.waitForSelector('button:has-text("Send"):enabled');
     }
 
