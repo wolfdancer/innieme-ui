@@ -16,30 +16,56 @@ const App: React.FC<AppProps> = ({ topic_id }) => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
-    const pingHeartbeat = async () => {
+    const chat = async () => {
         if (!message.trim()) return;
 
         setLoading(true);
-        try {
-            const history = responses.flatMap(r => [
-                { role: 'user', content: r.ping},
-                { role: 'assistant', content: r.pong}
-            ]);
-            
-            const result = await axios.post(`${API_URL}/api/chat`, {
-                topic: topic_id,
-                message: message,
-                history: history
-            });
-            
-            setResponses(prev => [...prev, result.data]);
-            setMessage(''); // Clear input after successful send
-        } catch (error) {
-            console.error('Error:', error);
-            setError(error instanceof Error ? error.message : `${error}`);
-        } finally {
-            setLoading(false);
+        let attempts = 0;
+        const maxAttempts = 5;
+
+        while (attempts < maxAttempts) {
+            try {
+                const history = responses.flatMap(r => [
+                    { role: 'user', content: r.ping},
+                    { role: 'assistant', content: r.pong}
+                ]);
+                
+                const result = await axios.post(`${API_URL}/api/chat`, {
+                    topic: topic_id,
+                    message: message,
+                    history: history
+                });
+                
+                // Success! Update state and exit
+                setResponses(prev => [...prev, result.data]);
+                setMessage(''); // Clear input after successful send
+                setError(null); // Clear any previous error
+                setLoading(false);
+                return;
+                
+            } catch (error) {
+                attempts++;
+                
+                // Check if it's a 503 error and we haven't reached max attempts
+                if (axios.isAxiosError(error) && error.response?.status === 503 && attempts < maxAttempts) {
+                    // Calculate backoff delay with jitter: base * (2^attempt) * random factor
+                    const backoffMs = 1000 * Math.pow(2, attempts - 1) * (0.5 + Math.random());
+                    setError('Service unavailable. Retrying...');
+                    console.log(`Attempt ${attempts} failed with 503 error. Retrying in ${Math.round(backoffMs)}ms...`);
+                    await new Promise(resolve => setTimeout(resolve, backoffMs));
+                } else {
+                    // For non-503 errors or after max attempts, handle as usual
+                    console.error('Error:', error);
+                    setError(error instanceof Error ? error.message : `${error}`);
+                    setLoading(false);
+                    return;
+                }
+            }
         }
+        
+        // If we've exhausted all attempts
+        setError("Service unavailable after multiple attempts. Please try again later.");
+        setLoading(false);
     };
 
     return (
@@ -76,9 +102,9 @@ const App: React.FC<AppProps> = ({ topic_id }) => {
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Enter a message"
-                        onKeyDown={(e) => e.key === 'Enter' && pingHeartbeat()}
+                        onKeyDown={(e) => e.key === 'Enter' && chat()}
                     />
-                    <button onClick={pingHeartbeat} disabled={loading}>
+                    <button onClick={chat} disabled={loading}>
                         {loading ? 'Sending...' : 'Send'}
                     </button>
                 </div>

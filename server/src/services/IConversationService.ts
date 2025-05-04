@@ -6,6 +6,6 @@ export interface ChatMessage {
 }
 
 export interface IConversationService {
-    initialize(): void;
+    initialize(): Promise<void>;
     sendMessage(message: string, history?: ChatMessage[], topic?: string): Promise<string>;
 }
