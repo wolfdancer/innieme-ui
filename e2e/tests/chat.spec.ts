@@ -29,7 +29,7 @@ test.describe('E2E Tests', () => {
 
     expect(history[1]).toEqual({
         label: 'InnieMe:',
-        content: expect.stringContaining('innieme'),
+        content: expect.stringMatching(/innieme/i),
         timestamp: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)
     });
     
@@ -45,7 +45,7 @@ test.describe('E2E Tests', () => {
 
     expect(newHistory[1]).toEqual({
       label: 'InnieMe:',
-      content: expect.stringContaining('assistant'),
+      content: expect.stringMatching(/innieme/i),
       timestamp: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)
     });
 

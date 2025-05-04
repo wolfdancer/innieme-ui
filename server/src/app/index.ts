@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { IConversationService, ChatMessage } from '../services/IConversationService';
 import { RateLimitRequestHandler } from 'express-rate-limit';
@@ -23,7 +23,39 @@ export const initializeApp = (
     service: IConversationService,
     limiter?: RateLimitRequestHandler) => {
     let conversationService = service;
-    service.initialize();
+    let isInitialized = false;
+    
+    // Retry configuration
+    const maxRetries = 5;
+    const baseDelay = 1000; // Start with 1 second delay
+    
+    const initializeWithRetry = (attempt = 0) => {
+      service.initialize()
+        .then(() => {
+          console.log('Conversation service initialized successfully');
+          isInitialized = true;
+        })
+        .catch(err => {
+          console.error(`Failed to initialize conversation service (attempt ${attempt + 1}/${maxRetries}):`, err);
+          
+          if (attempt < maxRetries - 1) {
+            // Calculate delay with exponential backoff
+            const delay = baseDelay * Math.pow(2, attempt);
+            console.log(`Retrying in ${delay/1000} seconds...`);
+            
+            setTimeout(() => {
+              initializeWithRetry(attempt + 1);
+            }, delay);
+          } else {
+            console.error('Maximum retry attempts reached. Service initialization failed.');
+            // Optionally, you could implement a fallback mechanism here
+            // or set a flag to indicate permanent failure
+          }
+        });
+    };
+    
+    // Start initialization process with retry logic
+    initializeWithRetry();
     
     // Middleware
     app.use(express.json());
@@ -33,6 +65,18 @@ export const initializeApp = (
     if (limiter) {
         app.use(limiter);
     }
+    
+    // Add service ready check middleware
+    app.use(((req: Request, res: Response, next: NextFunction): void => {
+        if (!isInitialized) {
+            res.status(503).json({
+                error: 'Service Unavailable',
+                details: 'The conversation service is still initializing. Please try again shortly.'
+            });
+            return
+        }
+        next();
+    }));
 
     // Heartbeat API endpoint
     app.get('/api/heartbeat', async (req: Request, res: Response) => {
