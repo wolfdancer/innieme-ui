@@ -22,7 +22,7 @@ export class OpenAIConversationService implements IConversationService {
     }
 
     async initialize(): Promise<void> {
-        // Uncommend the following to sleep for 30 seconds for testing purposes
+        // Uncomment the following to sleep for 30 seconds for testing purposes
         // console.log('Sleeping for 30 seconds...');
         // await new Promise(resolve => setTimeout(resolve, 30000));
         // console.log('Continuing after sleep');        
