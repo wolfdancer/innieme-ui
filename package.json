@@ -4,60 +4,58 @@
     "description": "InnieMe - Your Knowledge Speaks for Itself",
     "private": true,
     "workspaces": [
-      "client",
-      "server",
-      "e2e"
+        "client",
+        "server",
+        "e2e"
     ],
     "scripts": {
-      "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
-      "start:server": "cd server && npm run dev",
-      "start:client": "cd client && npm run dev",
-      "build": "npm run build:server && npm run build:client",
-      "build:server": "cd server && npm run build",
-      "build:client": "cd client && npm run build",
-      "install:all": "npm install && npm run install:server && npm run install:client && npm run install:e2e",
-      "install:server": "cd server && npm install",
-      "install:client": "cd client && npm install",
-      "install:e2e": "cd e2e && npm install",
-      "test": "concurrently \"npm run test:server\" \"npm run test:client\"",
-      "test:server": "cd server && npm run test",
-      "test:client": "cd client && npm run test",
-      "test:e2e": "cd e2e && npm run test",
-      "e2e": "npm run test:e2e",
-
-      "docker:build": "concurrently \"npm run docker:build:server\" \"npm run docker:build:client\"",
-      "docker:build:server": "cd server && docker build -t innieme-server .",
-      "docker:build:client": "cd client && docker build -t innieme-client .",
-      "docker:build:version": "concurrently \"npm run docker:build:version:server\" \"npm run docker:build:version:client\"",
-      "docker:build:version:server": "cd server && docker build -t innieme-server.prod -t innieme-server:$(git rev-parse --short HEAD) .",
-      "docker:build:version:client": "cd client && docker build -t innieme-client.prod -t innieme-client:$(git rev-parse --short HEAD) .",
-      "docker:build:debug": "concurrently \"npm run docker:build:debug:server\" \"npm run docker:build:debug:client\"",
-      "docker:build:debug:server": "cd server && docker build -t innieme-server.debug -f Dockerfile.debug .",
-      "docker:build:debug:client": "cd client && docker build -t innieme-client.debug -f Dockerfile.debug .",
-
-      "docker:run:server": "docker run -p 3001:3001 innieme-server",
-      "docker:run:client": "docker run -p 3000:3000 innieme-client",
-      "docker:run:debug": "concurrently \"npm run docker:run:debug:server\" \"npm run docker:run:debug:client\"",
-      "docker:run:debug:server": "docker run -p 3001:3001 -p 9229:9229 -v $(pwd)/config.yaml:/app/config/config.yaml -v $(pwd)/data:/app/config/data -e CONFIG_PATH=/app/config/config.yaml innieme-server.debug",
-      "docker:run:debug:client": "docker run -p 3000:3000 -e VITE_API_URL=http://localhost:3001 innieme-client.debug",
-
-      "docker:clean": "docker system prune -f",
-      "docker:stop:server": "docker stop $(docker ps -q --filter ancestor=innieme-server) || true",
-      "docker:stop:debug": "concurrently \"npm run docker:stop:debug:server\" \"npm run docker:stop:debug:client\"",
-      "docker:stop:debug:server": "docker stop $(docker ps -q --filter ancestor=innieme-server.debug) || true",
-      "docker:stop:debug:client": "docker stop $(docker ps -q --filter ancestor=innieme-client.debug) || true",
-
-      "docker:up:debug": "docker-compose -f docker-compose.debug.yml up",
-      "docker:down:debug": "docker-compose -f docker-compose.debug.yml down"
+        "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
+        "start:server": "cd server && npm run dev",
+        "start:client": "cd client && npm run dev",
+        "build": "npm run build:server && npm run build:client",
+        "build:server": "cd server && npm run build",
+        "build:client": "cd client && npm run build",
+        "install:all": "npm install && npm run install:server && npm run install:client && npm run install:e2e",
+        "install:server": "cd server && npm install",
+        "install:client": "cd client && npm install",
+        "install:e2e": "cd e2e && npm install",
+        "test": "concurrently \"npm run test:server\" \"npm run test:client\"",
+        "test:server": "cd server && npm run test",
+        "test:client": "cd client && npm run test",
+        "test:e2e": "cd e2e && npm run test",
+        "e2e": "npm run test:e2e",
+        "docker:build": "concurrently \"npm run docker:build:server\" \"npm run docker:build:client\"",
+        "docker:build:server": "cd server && docker build -t innieme-server .",
+        "docker:build:client": "cd client && docker build -t innieme-client .",
+        "docker:build:version": "concurrently \"npm run docker:build:version:server\" \"npm run docker:build:version:client\"",
+        "docker:build:version:server": "cd server && docker build -t innieme-server.prod -t innieme-server:$(git rev-parse --short HEAD) .",
+        "docker:build:version:client": "cd client && docker build -t innieme-client.prod -t innieme-client:$(git rev-parse --short HEAD) .",
+        "docker:build:debug": "concurrently \"npm run docker:build:debug:server\" \"npm run docker:build:debug:client\"",
+        "docker:build:debug:server": "cd server && docker build -t innieme-server.debug -f Dockerfile.debug .",
+        "docker:build:debug:client": "cd client && docker build -t innieme-client.debug -f Dockerfile.debug .",
+        "docker:run:server": "docker run -p 3001:3001 innieme-server",
+        "docker:run:client": "docker run -p 3000:3000 innieme-client",
+        "docker:run:debug": "concurrently \"npm run docker:run:debug:server\" \"npm run docker:run:debug:client\"",
+        "docker:run:debug:server": "docker run -p 3001:3001 -p 9229:9229 -v $(pwd)/config.yaml:/app/config/config.yaml -v $(pwd)/data:/app/config/data -e CONFIG_PATH=/app/config/config.yaml innieme-server.debug",
+        "docker:run:debug:client": "docker run -p 3000:3000 -e VITE_API_URL=http://localhost:3001 innieme-client.debug",
+        "docker:clean": "docker system prune -f",
+        "docker:stop:server": "docker stop $(docker ps -q --filter ancestor=innieme-server) || true",
+        "docker:stop:debug": "concurrently \"npm run docker:stop:debug:server\" \"npm run docker:stop:debug:client\"",
+        "docker:stop:debug:server": "docker stop $(docker ps -q --filter ancestor=innieme-server.debug) || true",
+        "docker:stop:debug:client": "docker stop $(docker ps -q --filter ancestor=innieme-client.debug) || true",
+        "docker:up:debug": "docker-compose -f docker-compose.debug.yml up",
+        "docker:down:debug": "docker-compose -f docker-compose.debug.yml down"
     },
     "devDependencies": {
-      "concurrently": "^8.2.0"
+        "@vitejs/plugin-react": "^4.4.1",
+        "concurrently": "^8.2.0",
+        "vite": "^6.3.4"
     },
     "overrides": {
-      "glob": "^10.0.0",
-      "inflight": "^2.0.0"
+        "glob": "^10.0.0",
+        "inflight": "^2.0.0"
     },
     "engines": {
-      "node": ">=16.0.0"
+        "node": ">=16.0.0"
     }
 }

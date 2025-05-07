@@ -17,9 +17,16 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  webServer: {
-    command: 'npm run start --prefix ../',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
-  }
+  webServer: [
+    {
+      command: 'npm run dev --prefix ../server', 
+      url: 'http://localhost:3001/api/heartbeat?message=hi',
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      command: 'npm run dev --prefix ../client',
+      url: 'http://localhost:3000',
+      reuseExistingServer: !process.env.CI,
+    }
+  ]
 });
