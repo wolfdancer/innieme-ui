@@ -1,5 +1,5 @@
 # Build stage
-FROM node:23-bullseye-slim AS build
+FROM node:23-bookworm-slim AS build
 
 # Set working directory
 WORKDIR /app
