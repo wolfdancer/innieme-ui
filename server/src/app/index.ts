@@ -146,5 +146,8 @@ export const initializeApp = (
             });
         }
     })
+
+    app.set('trust proxy', 1);
+
     return app;
 };
