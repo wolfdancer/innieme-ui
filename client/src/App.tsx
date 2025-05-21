@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
 import './App.css';
 
 const API_URL = window.location.protocol === 'https:' 
@@ -85,7 +86,9 @@ const App: React.FC<AppProps> = ({ topic_id }) => {
                                 <div key={`user-${response.responded}`} className="bot-message">
                                     <span className="label">InnieMe:</span>
                                     <span className="timestamp">{response.responded}</span>
-                                    <span className="content">{response.pong}</span>
+                                    <span className="content">
+                                        <ReactMarkdown skipHtml={true}>{response.pong}</ReactMarkdown>
+                                    </span>
                                 </div>
                             </React.Fragment>
                         ) : (
