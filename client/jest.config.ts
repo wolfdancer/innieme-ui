@@ -6,7 +6,8 @@ export default {
     '^.+\\.(ts|tsx)$': 'ts-jest'
   },
   moduleNameMapper: {
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy'
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    '^react-markdown$': '<rootDir>/src/__mocks__/react-markdown.tsx'
   },
   testMatch: ['**/__tests__/**/*.test.(ts|tsx)'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json']
