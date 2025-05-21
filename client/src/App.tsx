@@ -87,7 +87,7 @@ const App: React.FC<AppProps> = ({ topic_id }) => {
                                     <span className="label">InnieMe:</span>
                                     <span className="timestamp">{response.responded}</span>
                                     <span className="content">
-                                        <ReactMarkdown>{response.pong}</ReactMarkdown>
+                                        <ReactMarkdown skipHtml={true}>{response.pong}</ReactMarkdown>
                                     </span>
                                 </div>
                             </React.Fragment>
