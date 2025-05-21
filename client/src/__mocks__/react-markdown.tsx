@@ -8,7 +8,7 @@ const ReactMarkdown = ({
   children: React.ReactNode, 
   skipHtml?: boolean 
 }) => {
-  return <div data-testid="markdown-content">{children}</div>;
+  return <div data-testid="markdown-content">{children}-{skipHtml}</div>;
 };
 
 export default ReactMarkdown;
