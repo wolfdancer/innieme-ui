@@ -13,7 +13,14 @@ interface AppProps {
 
 const App: React.FC<AppProps> = ({ topic_id }) => {
     const [message, setMessage] = useState('');
-    const [responses, setResponses] = useState<any[]>([]);
+    const [responses, setResponses] = useState<Array<{
+        ping?: string;
+        pong?: string;
+        received?: string;
+        responded?: string;
+        error?: string;
+        timestamp?: number;
+    }>>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 

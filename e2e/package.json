@@ -15,11 +15,11 @@
       "debug": "playwright test --debug"
     },
     "dependencies": {
-      "@playwright/test": "^1.40.1",
-      "typescript": "^5.3.3"
+      "@playwright/test": "^1.55.0",
+      "typescript": "^5.9.2"
     },
     "devDependencies": {
-      "@types/node": "^20.10.5",
+      "@types/node": "^24.3.0",
       "ts-node": "^10.9.2"
     },
     "engines": {
