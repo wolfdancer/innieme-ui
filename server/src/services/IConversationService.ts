@@ -1,5 +1,3 @@
-import { init } from "openai/_shims";
-
 export interface ChatMessage {
     role: 'user' | 'assistant';
     content: string;

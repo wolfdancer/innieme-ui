@@ -1,8 +1,7 @@
 import { Topic } from '../config/config';
-import { OpenAI } from 'openai';
 import { HNSWLib } from "@langchain/community/vectorstores/hnswlib";
 import { OpenAIEmbeddings } from "@langchain/openai";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import fs from 'fs-extra';
 import pdf from 'pdf-parse';
 import path from 'path';
@@ -84,7 +83,7 @@ export class KnowledgeService {
             // Create vector store from chunks
             this.vectorStore = await HNSWLib.fromTexts(
                 chunks,
-                chunks.map((_, i) => ({ id: i })),
+                chunks.map((_: string, i: number) => ({ id: i })),
                 this.embeddings
             );
 
@@ -100,6 +99,6 @@ export class KnowledgeService {
             throw new Error('Vector store not initialized');
         }
         const results = await this.vectorStore.similaritySearch(query, k);
-        return results.map(doc => doc.pageContent);
+        return results.map((doc: any) => doc.pageContent);
     }
 }
