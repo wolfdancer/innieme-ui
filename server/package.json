@@ -12,6 +12,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@langchain/community": "^1.0.0",
+    "@langchain/core": "^1.0.1",
+    "@langchain/openai": "^1.0.0",
+    "@langchain/textsplitters": "^1.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/js-yaml": "^4.0.9",
@@ -19,15 +23,13 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "express-rate-limit": "^8.0.1",
-    "js-yaml": "^4.1.0",
-    "openai": "^5.16.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.2",
-    "@langchain/community": "^0.3.53",
-    "@langchain/openai": "^0.6.9",
     "fs-extra": "^11.3.1",
     "hnswlib-node": "^3.0.0",
-    "pdf-parse": "^1.1.1"
+    "js-yaml": "^4.1.0",
+    "openai": "^5.16.0",
+    "pdf-parse": "^1.1.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
