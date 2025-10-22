@@ -25,5 +25,6 @@
     "types": ["vitest/globals", "node"]
   },
   "include": ["src", "globals.d.ts"],
+  "exclude": ["src/**/__tests__/**", "src/**/*.test.tsx", "src/**/*.test.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
