@@ -2,11 +2,19 @@ import yaml from 'js-yaml';
 import fs from 'fs';
 import path from 'path';
 
+export interface Tool {
+    name: string;
+    description: string;
+    type: 'web_search' | 'webcal';
+    url?: string; // Required for webcal type
+}
+
 export interface Topic {
     name: string;
     id: string;
     role: string;
     docs_dir: string;
+    tools?: Tool[];
 }
 
 interface Outie {
@@ -16,6 +24,7 @@ interface Outie {
 
 export interface Config {
     openai_api_key: string;
+    brave_api_key?: string;
     outies: Outie[];
 }
 

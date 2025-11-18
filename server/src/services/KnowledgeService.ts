@@ -1,4 +1,4 @@
-import { Topic } from '../config/config';
+import { Topic, Tool } from '../config/config';
 import { HNSWLib } from "@langchain/community/vectorstores/hnswlib";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
@@ -11,6 +11,7 @@ export class KnowledgeService {
     private _id: string;
     private _name: string;
     private _docsDir: string;
+    private _tools?: Tool[];
     private vectorStore: HNSWLib | null = null;
     private embeddings: OpenAIEmbeddings;
 
@@ -19,6 +20,7 @@ export class KnowledgeService {
         this._id = topic.id;
         this._name = topic.name;
         this._docsDir = topic.docs_dir;
+        this._tools = topic.tools;
         this.embeddings = new OpenAIEmbeddings({
             openAIApiKey: openAIApiKey,
             modelName: "text-embedding-3-small"
@@ -35,6 +37,10 @@ export class KnowledgeService {
 
     get name(): string {
         return this._name;
+    }
+
+    get tools(): Tool[] | undefined {
+        return this._tools;
     }
 
     private async readPDFContent(filePath: string): Promise<string> {
