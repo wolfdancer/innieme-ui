@@ -1,6 +1,7 @@
 export default {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
+  setupFiles: ['<rootDir>/jest.setup.ts'],
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest'
