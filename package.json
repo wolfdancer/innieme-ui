@@ -53,8 +53,7 @@
     },
     "overrides": {
         "glob": "^10.0.0",
-        "inflight": "^2.0.0",
-        "zod": "^4.6.6"
+        "inflight": "^2.0.0"
     },
     "engines": {
         "node": ">=22.0.0"
