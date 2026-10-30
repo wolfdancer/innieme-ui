@@ -15,7 +15,7 @@ This is a monorepo with three main workspaces:
 
 ### Key Backend Components
 
-- **KnowledgeService** (`server/src/services/KnowledgeService.ts`): Handles document processing (PDF, MD, TXT), text chunking (1000 chars with 200 overlap using RecursiveCharacterTextSplitter), and vector similarity search using LangChain with HNSW index and OpenAI embeddings (text-embedding-3-small)
+- **KnowledgeService** (`server/src/services/KnowledgeService.ts`): Handles document processing (PDF, MD, TXT), text chunking (1000 chars with 200 overlap using RecursiveCharacterTextSplitter), and vector similarity search using an hnswlib-node HNSW index (cosine) over OpenAI embeddings (text-embedding-3-small, via @langchain/openai)
 - **OpenAIConversationService** (`server/src/services/OpenAIConversationService.ts`): Manages OpenAI API interactions (gpt-3.5-turbo), maintains a Map of topic IDs to KnowledgeService instances, performs similarity search to retrieve relevant context before sending to LLM
 - **App initialization** (`server/src/app/index.ts`): Express server setup with rate limiting, CORS, retry logic for service initialization with exponential backoff (5 attempts, starting at 1s delay), middleware to block requests until initialization completes (returns 503)
 - **IConversationService** (`server/src/services/IConversationService.ts`): Interface for conversation services allowing different implementations
