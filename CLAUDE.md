@@ -73,6 +73,8 @@ innieme-ui/
 
 ## Common Development Commands
 
+Requires Node.js 22+ (the `openai` SDK v7 dropped older versions). Server Docker images use Node 24.
+
 ### Root Level Commands
 ```bash
 # Install all dependencies

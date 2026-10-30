@@ -1,5 +1,5 @@
 # Use Node.js LTS version as the base image
-FROM node:20-alpine
+FROM node:24-alpine
 ENV NODE_ENV=production
 WORKDIR /app
 RUN mkdir -p /app/config
