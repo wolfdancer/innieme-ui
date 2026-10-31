@@ -2,8 +2,8 @@ version: '3'
 services:
   client:
     build:
-      context: ./client
-      dockerfile: Dockerfile.prod
+      context: .
+      dockerfile: client/Dockerfile
     ports:
       - "3000:3000"
     depends_on:
@@ -14,11 +14,15 @@ services:
   
   server:
     build:
-      context: ./server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: server/Dockerfile
     ports:
       - "3001:3001"
     environment:
       - NODE_ENV=production
       - PORT=3001
+      - CONFIG_PATH=/app/config/config.yaml
+    volumes:
+      - ./config.yaml:/app/config/config.yaml:ro
+      - ./data:/app/config/data:ro
     restart: unless-stopped

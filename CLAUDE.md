@@ -73,7 +73,7 @@ innieme-ui/
 
 ## Common Development Commands
 
-Requires Node.js 22+ (the `openai` SDK v7 dropped older versions). Server Docker images use Node 24.
+Requires Node.js 22+ (the `openai` SDK v7 dropped older versions). Docker images use Node 24 and build from the repo root (`docker build -f server/Dockerfile .`) so they install from the root `package-lock.json`.
 
 ### Root Level Commands
 ```bash
@@ -151,7 +151,7 @@ npm run docker:stop:debug         # Stop debug containers
 ```
 
 Docker Compose files available:
-- `docker-compose.yml`: Production configuration
+- `docker-compose.yml`: Production configuration (mounts `config.yaml` and `data/` read-only)
 - `docker-compose.debug.yml`: Debug configuration with volume mounts for config and data
 
 ## API Endpoints

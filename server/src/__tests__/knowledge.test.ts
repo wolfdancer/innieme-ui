@@ -61,11 +61,24 @@ describe('KnowledgeService', () => {
         expect(results).toEqual(['only one small chunk']);
     });
 
-    it('returns no results for an empty docs directory', async () => {
+    it('keeps chunks from different documents separate', async () => {
+        await fs.writeFile(path.join(docsDir, 'first.txt'), 'first document');
+        await fs.writeFile(path.join(docsDir, 'second.txt'), 'second document');
         const service = createService();
         await service.initialize();
 
+        const results = await service.similaritySearch('document', 5);
+        expect(results.sort()).toEqual(['first document', 'second document']);
+    });
+
+    it('warns and returns no results for an empty docs directory', async () => {
+        const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+        const service = createService();
+        await service.initialize();
+
+        expect(warn).toHaveBeenCalledWith(expect.stringContaining('No content loaded'));
         expect(await service.similaritySearch('anything')).toEqual([]);
+        warn.mockRestore();
     });
 
     it('throws when searched before initialization', async () => {

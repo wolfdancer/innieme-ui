@@ -1,12 +1,18 @@
 # Use Node.js LTS version
+# Build from the repo root so the workspace lockfile is used:
+#   docker build -f server/Dockerfile.debug .
 FROM node:24
 
 WORKDIR /app
 RUN mkdir -p /app/config
-COPY package*.json ./
-RUN npm install --legacy-peer-deps
-COPY . .
-EXPOSE 3000
+COPY package.json package-lock.json ./
+COPY client/package.json client/
+COPY server/package.json server/
+COPY e2e/package.json e2e/
+RUN npm ci -w server
+COPY server/ server/
+WORKDIR /app/server
+EXPOSE 3001
 # Expose debugging port
 EXPOSE 9229
 

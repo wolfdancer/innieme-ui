@@ -78,9 +78,12 @@ export class KnowledgeService {
                 chunkOverlap: 200,
             });
 
-            // Split all texts into chunks
-            const chunks = await textSplitter.splitText(texts.join('\n'));
-            
+            // Split each document separately so no chunk spans two files
+            const chunks = (await Promise.all(texts.map(text => textSplitter.splitText(text)))).flat();
+            if (chunks.length === 0) {
+                console.warn(`${this.name} - No content loaded from ${this._docsDir}; every query will report no match`);
+            }
+
             // Embed chunks and build the vector index (label = chunk position)
             const vectors = await this.embeddings.embedDocuments(chunks);
             const index = new HierarchicalNSW('cosine', vectors[0]?.length ?? 0);

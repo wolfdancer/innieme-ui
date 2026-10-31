@@ -1,0 +1,13 @@
+# Build context is the repo root (see the Dockerfiles in client/ and server/)
+**/node_modules
+**/dist
+**/*.tsbuildinfo
+**/.env*
+**/npm-debug.log
+.git
+.github
+# Secrets and knowledge-base data are mounted at runtime, never baked in
+config.yaml
+data
+e2e/playwright-report
+e2e/test-results

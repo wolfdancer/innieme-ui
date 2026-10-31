@@ -1,8 +1,8 @@
 services:
   client:
     build:
-      context: ./client
-      dockerfile: Dockerfile.debug
+      context: .
+      dockerfile: client/Dockerfile.debug
     restart: always
     ports:
       - "3000:3000"
@@ -11,8 +11,8 @@ services:
 
   server:
     build:
-      context: ./server
-      dockerfile: Dockerfile.debug
+      context: .
+      dockerfile: server/Dockerfile.debug
     restart: always
     ports:
       - "3001:3001"
