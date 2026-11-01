@@ -1,17 +1,24 @@
 # Use Node.js LTS as base image
-FROM node:23-bullseye-slim AS development
+FROM node:24-bookworm-slim AS development
+
+# Build from the repo root so the workspace lockfile is used:
+#   docker build -f client/Dockerfile.debug .
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package.json ./
+# Copy package files (root lockfile + every workspace manifest)
+COPY package.json package-lock.json ./
+COPY client/package.json client/
+COPY server/package.json server/
+COPY e2e/package.json e2e/
 
-# Use npm install instead of npm ci to generate/update package-lock.json
-RUN npm install
+# Install client dependencies exactly as locked
+RUN npm ci -w client
 
 # Copy source code
-COPY . .
+COPY client/ client/
+WORKDIR /app/client
 
 # Expose Vite dev server port (3000)
 EXPOSE 3000

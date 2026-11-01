@@ -15,7 +15,7 @@ This is a monorepo with three main workspaces:
 
 ### Key Backend Components
 
-- **KnowledgeService** (`server/src/services/KnowledgeService.ts`): Handles document processing (PDF, MD, TXT), text chunking (1000 chars with 200 overlap using RecursiveCharacterTextSplitter), and vector similarity search using LangChain with HNSW index and OpenAI embeddings (text-embedding-3-small)
+- **KnowledgeService** (`server/src/services/KnowledgeService.ts`): Handles document processing (PDF, MD, TXT), text chunking (1000 chars with 200 overlap using RecursiveCharacterTextSplitter), and vector similarity search using an hnswlib-node HNSW index (cosine) over OpenAI embeddings (text-embedding-3-small, via @langchain/openai)
 - **OpenAIConversationService** (`server/src/services/OpenAIConversationService.ts`): Manages OpenAI API interactions (gpt-3.5-turbo), maintains a Map of topic IDs to KnowledgeService instances, performs similarity search to retrieve relevant context before sending to LLM
 - **App initialization** (`server/src/app/index.ts`): Express server setup with rate limiting, CORS, retry logic for service initialization with exponential backoff (5 attempts, starting at 1s delay), middleware to block requests until initialization completes (returns 503)
 - **IConversationService** (`server/src/services/IConversationService.ts`): Interface for conversation services allowing different implementations
@@ -72,6 +72,8 @@ innieme-ui/
 ```
 
 ## Common Development Commands
+
+Requires Node.js 22+ (the `openai` SDK v7 dropped older versions). Docker images use Node 24 and build from the repo root (`docker build -f server/Dockerfile .`) so they install from the root `package-lock.json`.
 
 ### Root Level Commands
 ```bash
@@ -149,7 +151,7 @@ npm run docker:stop:debug         # Stop debug containers
 ```
 
 Docker Compose files available:
-- `docker-compose.yml`: Production configuration
+- `docker-compose.yml`: Production configuration (mounts `config.yaml` and `data/` read-only)
 - `docker-compose.debug.yml`: Debug configuration with volume mounts for config and data
 
 ## API Endpoints

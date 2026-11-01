@@ -1,5 +1,5 @@
 import { Topic } from '../config/config';
-import { HNSWLib } from "@langchain/community/vectorstores/hnswlib";
+import { HierarchicalNSW } from "hnswlib-node";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import fs from 'fs-extra';
@@ -11,7 +11,8 @@ export class KnowledgeService {
     private _id: string;
     private _name: string;
     private _docsDir: string;
-    private vectorStore: HNSWLib | null = null;
+    private index: HierarchicalNSW | null = null;
+    private chunks: string[] = [];
     private embeddings: OpenAIEmbeddings;
 
     constructor(topic: Topic, openAIApiKey: string) {
@@ -77,15 +78,19 @@ export class KnowledgeService {
                 chunkOverlap: 200,
             });
 
-            // Split all texts into chunks
-            const chunks = await textSplitter.splitText(texts.join('\n'));
-            
-            // Create vector store from chunks
-            this.vectorStore = await HNSWLib.fromTexts(
-                chunks,
-                chunks.map((_: string, i: number) => ({ id: i })),
-                this.embeddings
-            );
+            // Split each document separately so no chunk spans two files
+            const chunks = (await Promise.all(texts.map(text => textSplitter.splitText(text)))).flat();
+            if (chunks.length === 0) {
+                console.warn(`${this.name} - No content loaded from ${this._docsDir}; every query will report no match`);
+            }
+
+            // Embed chunks and build the vector index (label = chunk position)
+            const vectors = await this.embeddings.embedDocuments(chunks);
+            const index = new HierarchicalNSW('cosine', vectors[0]?.length ?? 0);
+            index.initIndex(vectors.length);
+            vectors.forEach((vector, i) => index.addPoint(vector, i));
+            this.chunks = chunks;
+            this.index = index;
 
             console.log(`${this.name} - Initialized vector store with ${chunks.length} chunks from ${texts.length} documents`);
         } catch (error) {
@@ -95,10 +100,15 @@ export class KnowledgeService {
     }
 
     async similaritySearch(query: string, k: number = 5): Promise<string[]> {
-        if (!this.vectorStore) {
+        if (!this.index) {
             throw new Error('Vector store not initialized');
         }
-        const results = await this.vectorStore.similaritySearch(query, k);
-        return results.map((doc: any) => doc.pageContent);
+        const count = this.index.getCurrentCount();
+        if (count === 0) {
+            return [];
+        }
+        const queryVector = await this.embeddings.embedQuery(query);
+        const { neighbors } = this.index.searchKnn(queryVector, Math.min(k, count));
+        return neighbors.map(label => this.chunks[label]);
     }
 }

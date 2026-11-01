@@ -1,17 +1,24 @@
 # Build stage
-FROM node:23-bookworm-slim AS build
+FROM node:24-bookworm-slim AS build
+
+# Build from the repo root so the workspace lockfile is used:
+#   docker build -f client/Dockerfile .
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package.json ./
+# Copy package files (root lockfile + every workspace manifest)
+COPY package.json package-lock.json ./
+COPY client/package.json client/
+COPY server/package.json server/
+COPY e2e/package.json e2e/
 
-# Install dependencies using npm install instead of npm ci
-RUN npm install
+# Install client dependencies exactly as locked
+RUN npm ci -w client
 
 # Copy source code
-COPY . .
+COPY client/ client/
+WORKDIR /app/client
 
 # Build the application
 RUN npm run build
@@ -20,7 +27,7 @@ RUN npm run build
 FROM nginx:stable-alpine AS production
 
 # Copy built assets from build stage
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/client/dist /usr/share/nginx/html
 
 # Configure nginx to handle SPA routing
 RUN echo 'server { \
